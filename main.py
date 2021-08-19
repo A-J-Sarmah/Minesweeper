@@ -59,9 +59,11 @@ def drawCharacters(number):
     return COORDINATES_OF_NUMBER
 
 
+# generates mine in random positions
 def generateMine():
     TOTAL_MINE_CREATED = 0
-    while TOTAL_MINE_CREATED <= 8:
+    # the loop that continues until 10 mines are generated
+    while TOTAL_MINE_CREATED <= 10:
         RANDOM_NUMBER = random.randint(11, 77)
         if RANDOM_NUMBER in mine:
             TOTAL_MINE_CREATED = TOTAL_MINE_CREATED
