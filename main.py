@@ -5,14 +5,12 @@ print("\n************Minesweeper************\n")
 MINE = []
 NUMBER_NEAR_MINE = []
 USER_DATA = "X"
+DISPLAY_DATA = []
 
 
 # drawing the game board
-def drawboard(number):
+def drawboard(data):
     NO_OF_COLUMN = 8
-    COORDINATES = drawCharacters(number)
-    COORDINATE_X = COORDINATES[0]
-    COORDINATE_Y = COORDINATES[1]
     for i in range(NO_OF_COLUMN):
         # checks if we are currently executing first column.
         if 0 == i:
@@ -22,37 +20,30 @@ def drawboard(number):
                     print(" " + str(j) + " ")
                 else:
                     print(" " + str(j) + " ", end="")
-        # checks if we are dealing with x coordinate
-        elif COORDINATE_X == i:
-            # renders all other column
-            for j in range(NO_OF_COLUMN):
-                # the first cell representing the row number of the board.
-                if j == 0:
-                    print(" " + str(i) + " ", end="")
-                # checks if we are dealing with second digit of number
-                elif j == COORDINATE_Y:
-                    if j == 7:
-                        print(" " + str(USER_DATA) + " ")
-                    else:
-                        print(" " + str(USER_DATA) + " ", end="")
-                # checks if we are dealing with the last digit.
-                elif j == 7:
-                    print(" - ")
-                # draws required number for remaining cell .
-                else:
-                    print(" - ", end="")
         else:
             # renders all other column
             for j in range(NO_OF_COLUMN):
-                # the first cell representing the row number of the board.
+                elementFound = False
                 if j == 0:
                     print(" " + str(i) + " ", end="")
-                # checks if we are dealing with the last digit.
-                elif j == 7:
-                    print(" - ")
-                # draws required number for remaining cell .
                 else:
-                    print(" - ", end="")
+                    for element in data:
+                        COORDINATES = drawCharacters(element)
+                        COORDINATE_X = COORDINATES[0]
+                        COORDINATE_Y = COORDINATES[1]
+                        if i == COORDINATE_X and j == COORDINATE_Y:
+                            elementFound = True
+                            break
+                    if elementFound:
+                        if j == 7:
+                            print(" " + USER_DATA + " ")
+                        else:
+                            print(" " + USER_DATA + " ", end="")
+                    if not elementFound:
+                        if j == 7:
+                            print(" - ")
+                        else:
+                            print(" - ", end="")
 
 
 # drawing numbers and character in game board which are provided as input by the user.
@@ -78,7 +69,6 @@ def generateMine():
 
 # generate number near the mines
 def generateNumberNearMine(mine):
-    numbers = []
     for i in mine:
         # checks if current index is last index in column
         isLastNumber = i - 17
@@ -88,14 +78,24 @@ def generateNumberNearMine(mine):
                 if 11 <= j <= 77:
                     NUMBER_NEAR_MINE.append(j)
         # default case
-        indexes = [i - 1, i + 1, i + 10, i - 10, i + 9, i - 9,  i+11, i-11]
+        indexes = [i - 1, i + 1, i + 10, i - 10, i + 9, i - 9, i + 11, i - 11]
         for j in indexes:
-            if 11 <= j <= 77 and j % 10 != 0:
+            if 11 <= j <= 77 and j % 10 != 0 and j % 10 != 8 and j % 10 != 9:
                 NUMBER_NEAR_MINE.append(j)
 
 
-drawboard(45)
+# the opening of the game is marked by this function
+def openGame():
+    NUMBER_OF_REVEALED_BOXES = round(len(NUMBER_NEAR_MINE) / 2)
+    index = 0
+    while index < NUMBER_OF_REVEALED_BOXES:
+        RANDOM_NUMBER = random.choice(NUMBER_NEAR_MINE)
+        DISPLAY_DATA.append(RANDOM_NUMBER)
+        index = index + 1
+
+
 generateMine()
 generateNumberNearMine(MINE)
-print(MINE)
-print(NUMBER_NEAR_MINE)
+openGame()
+drawboard(DISPLAY_DATA)
+print(DISPLAY_DATA)
