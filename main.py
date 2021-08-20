@@ -132,7 +132,7 @@ def validateUserInputAndActions():
             if 11 <= INPUT <= 77 and INPUT % 10 != 0 and INPUT % 10 != 8 and INPUT % 10 != 9:
                 break
             else:
-                # print("Please enter a valid index")
+                print("Please enter a valid index")
                 continue
         except ValueError:
             print("Sorry, I didn't understand that.")
