@@ -157,8 +157,6 @@ while IS_PLAYING:
         validateUserInputAndActions()
         drawboard(DISPLAY_DATA)
     RENDER = RENDER + 1
-    print(MINE)
-    print(DISPLAY_DATA)
 
 
 if not IS_PLAYING and IS_WON:
