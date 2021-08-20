@@ -117,10 +117,6 @@ def checkWin():
             print(element)
             IS_PLAYING = False
             return
-    if len(DISPLAY_DATA) + len(MINE) == 49:
-        global IS_WON
-        IS_WON = True
-        IS_PLAYING = False
 
 
 # handle user input
@@ -157,7 +153,6 @@ while IS_PLAYING:
         validateUserInputAndActions()
         drawboard(DISPLAY_DATA)
     RENDER = RENDER + 1
-
 
 if not IS_PLAYING and IS_WON:
     print("Congrats!You won")
