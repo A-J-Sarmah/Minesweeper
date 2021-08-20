@@ -5,6 +5,9 @@ print("\n************Minesweeper************\n")
 MINE = []
 NUMBER_NEAR_MINE = []
 DISPLAY_DATA = []
+IS_WON = False
+IS_PLAYING = True
+FIRST_INPUT = 0
 
 
 # drawing the game board
@@ -63,6 +66,8 @@ def generateMine():
             TOTAL_MINE_CREATED = TOTAL_MINE_CREATED
         elif RANDOM_NUMBER % 10 == 0:
             TOTAL_MINE_CREATED = TOTAL_MINE_CREATED
+        elif RANDOM_NUMBER == FIRST_INPUT:
+            TOTAL_MINE_CREATED = TOTAL_MINE_CREATED
         else:
             TOTAL_MINE_CREATED = TOTAL_MINE_CREATED + 1
             MINE.append(RANDOM_NUMBER)
@@ -95,7 +100,7 @@ def openGame():
         index = index + 1
 
 
-# detecting STORE_DATA
+# function to determine the BOMB_DATA
 def printNumberNearBomb(number):
     output = 0
     for element in DISPLAY_DATA:
@@ -104,8 +109,55 @@ def printNumberNearBomb(number):
     return str(output)
 
 
-generateMine()
-generateNumberNearMine(MINE)
-openGame()
-drawboard(DISPLAY_DATA)
-print(DISPLAY_DATA)
+# check win
+def checkWin():
+    global IS_PLAYING
+    for element in DISPLAY_DATA:
+        if element in MINE:
+            IS_PLAYING = False
+            return
+    if len(DISPLAY_DATA) + len(MINE) == 49:
+        global IS_WON
+        IS_WON = True
+        IS_PLAYING = False
+
+
+# handle user input
+def validateUserInputAndActions():
+    INPUT = ""
+    while True:
+        try:
+            INPUT = int(input("Please Enter the index where you want to insert the element."))
+            if 11 <= INPUT <= 77 and INPUT % 10 != 0 and INPUT % 10 != 8 and INPUT % 10 != 9:
+                break
+        except ValueError:
+            print("Sorry, I didn't understand that.")
+            continue
+        else:
+            break
+    global FIRST_INPUT
+    FIRST_INPUT = INPUT
+    DISPLAY_DATA.append(INPUT)
+    checkWin()
+
+
+RENDER = 0
+while IS_PLAYING:
+    if RENDER == 0:
+        validateUserInputAndActions()
+        generateMine()
+        generateNumberNearMine(MINE)
+        openGame()
+        drawboard(DISPLAY_DATA)
+    else:
+        validateUserInputAndActions()
+        drawboard(DISPLAY_DATA)
+    RENDER = RENDER + 1
+    print(MINE)
+    print(DISPLAY_DATA)
+
+
+if not IS_PLAYING and IS_WON:
+    print("Congrats!You won")
+else:
+    print("You Lost")
