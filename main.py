@@ -1,14 +1,16 @@
 import random
 
-print("\n************minesweeper************\n")
+print("\n************Minesweeper************\n")
 
-mine = []
+MINE = []
+NUMBER_NEAR_MINE = []
+USER_DATA = "X"
 
 
 # drawing the game board
-def drawboard():
+def drawboard(number):
     NO_OF_COLUMN = 8
-    COORDINATES = drawCharacters(17)
+    COORDINATES = drawCharacters(number)
     COORDINATE_X = COORDINATES[0]
     COORDINATE_Y = COORDINATES[1]
     for i in range(NO_OF_COLUMN):
@@ -30,9 +32,9 @@ def drawboard():
                 # checks if we are dealing with second digit of number
                 elif j == COORDINATE_Y:
                     if j == 7:
-                        print("   ")
+                        print(" " + str(USER_DATA) + " ")
                     else:
-                        print("   ", end="")
+                        print(" " + str(USER_DATA) + " ", end="")
                 # checks if we are dealing with the last digit.
                 elif j == 7:
                     print(" - ")
@@ -65,13 +67,35 @@ def generateMine():
     # the loop that continues until 10 mines are generated
     while TOTAL_MINE_CREATED <= 10:
         RANDOM_NUMBER = random.randint(11, 77)
-        if RANDOM_NUMBER in mine:
+        if RANDOM_NUMBER in MINE:
+            TOTAL_MINE_CREATED = TOTAL_MINE_CREATED
+        elif RANDOM_NUMBER % 10 == 0:
             TOTAL_MINE_CREATED = TOTAL_MINE_CREATED
         else:
             TOTAL_MINE_CREATED = TOTAL_MINE_CREATED + 1
-            mine.append(RANDOM_NUMBER)
+            MINE.append(RANDOM_NUMBER)
 
 
-drawboard()
+# generate number near the mines
+def generateNumberNearMine(mine):
+    numbers = []
+    for i in mine:
+        # checks if current index is last index in column
+        isLastNumber = i - 17
+        if isLastNumber == 0 or isLastNumber % 10 == 0:
+            indexes = [i - 1, i + 10, i - 10, i + 9, i - 9]
+            for j in indexes:
+                if 11 <= j <= 77:
+                    NUMBER_NEAR_MINE.append(j)
+        # default case
+        indexes = [i - 1, i + 1, i + 10, i - 10, i + 9, i - 9,  i+11, i-11]
+        for j in indexes:
+            if 11 <= j <= 77 and j % 10 != 0:
+                NUMBER_NEAR_MINE.append(j)
+
+
+drawboard(45)
 generateMine()
-print(mine)
+generateNumberNearMine(MINE)
+print(MINE)
+print(NUMBER_NEAR_MINE)
