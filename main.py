@@ -86,7 +86,7 @@ def generateNumberNearMine(mine):
         # default case
         indexes = [i - 1, i + 1, i + 10, i - 10, i + 9, i - 9, i + 11, i - 11]
         for j in indexes:
-            if 11 <= j <= 77 and j % 10 != 0 and j % 10 != 8 and j % 10 != 9:
+            if 11 <= j <= 77 and j % 10 != 0 and j % 10 != 8 and j % 10 != 9 and j not in MINE:
                 NUMBER_NEAR_MINE.append(j)
 
 
@@ -114,6 +114,7 @@ def checkWin():
     global IS_PLAYING
     for element in DISPLAY_DATA:
         if element in MINE:
+            print(element)
             IS_PLAYING = False
             return
     if len(DISPLAY_DATA) + len(MINE) == 49:
@@ -130,6 +131,9 @@ def validateUserInputAndActions():
             INPUT = int(input("Please Enter the index where you want to insert the element."))
             if 11 <= INPUT <= 77 and INPUT % 10 != 0 and INPUT % 10 != 8 and INPUT % 10 != 9:
                 break
+            else:
+                # print("Please enter a valid index")
+                continue
         except ValueError:
             print("Sorry, I didn't understand that.")
             continue
