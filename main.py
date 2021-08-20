@@ -4,7 +4,6 @@ print("\n************Minesweeper************\n")
 
 MINE = []
 NUMBER_NEAR_MINE = []
-USER_DATA = "X"
 DISPLAY_DATA = []
 
 
@@ -17,15 +16,15 @@ def drawboard(data):
             # renders list of number in first column.
             for j in range(NO_OF_COLUMN):
                 if j == 7:
-                    print(" " + str(j) + " ")
+                    print(" \033[1m" + str(j) + " \033[0m")
                 else:
-                    print(" " + str(j) + " ", end="")
+                    print(" \033[1m" + str(j) + " \033[0m", end="")
         else:
             # renders all other column
             for j in range(NO_OF_COLUMN):
                 elementFound = False
                 if j == 0:
-                    print(" " + str(i) + " ", end="")
+                    print(" \033[1m" + str(i) + " \033[0m", end="")
                 else:
                     for element in data:
                         COORDINATES = drawCharacters(element)
@@ -35,15 +34,17 @@ def drawboard(data):
                             elementFound = True
                             break
                     if elementFound:
+                        BOMB_DATA = printNumberNearBomb(element)
                         if j == 7:
-                            print(" " + USER_DATA + " ")
+                            print(" " + BOMB_DATA + " ")
                         else:
-                            print(" " + USER_DATA + " ", end="")
+                            print(" " + BOMB_DATA + " ", end="")
                     if not elementFound:
+                        BOMB_DATA = "-"
                         if j == 7:
-                            print(" - ")
+                            print(" " + BOMB_DATA + " ")
                         else:
-                            print(" - ", end="")
+                            print(" " + BOMB_DATA + " ", end="")
 
 
 # drawing numbers and character in game board which are provided as input by the user.
@@ -92,6 +93,15 @@ def openGame():
         RANDOM_NUMBER = random.choice(NUMBER_NEAR_MINE)
         DISPLAY_DATA.append(RANDOM_NUMBER)
         index = index + 1
+
+
+# detecting STORE_DATA
+def printNumberNearBomb(number):
+    output = 0
+    for element in DISPLAY_DATA:
+        if number == element:
+            output = output + 1
+    return str(output)
 
 
 generateMine()
