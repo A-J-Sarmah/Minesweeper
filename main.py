@@ -133,8 +133,6 @@ def validateUserInputAndActions():
         except ValueError:
             print("Sorry, I didn't understand that.")
             continue
-        else:
-            break
     global FIRST_INPUT
     FIRST_INPUT = INPUT
     DISPLAY_DATA.append(INPUT)
