@@ -29,7 +29,9 @@ def drawboard(data):
                 if j == 0:
                     print(" \033[1m" + str(i) + " \033[0m", end="")
                 else:
+                    ele = 0
                     for element in data:
+                        ele = element
                         COORDINATES = drawCharacters(element)
                         COORDINATE_X = COORDINATES[0]
                         COORDINATE_Y = COORDINATES[1]
@@ -37,7 +39,7 @@ def drawboard(data):
                             elementFound = True
                             break
                     if elementFound:
-                        BOMB_DATA = printNumberNearBomb(element)
+                        BOMB_DATA = printNumberNearBomb(ele)
                         if j == 7:
                             print(" " + BOMB_DATA + " ")
                         else:
